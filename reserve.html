@@ -1,90 +1,247 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>あめのみづ鍼灸院</title>
-    <<link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-180x180.png">
-    <link rel="icon" type="image/png" href="/icon-192x192.png">
-    <script src="js/script.js" defer></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-    <!-- ローディング画面 -->
-    <div id="loading">
-    <img class="spinner" src="images/loading.png" alt="">
-    </div>
+  <div id="app">
+      <div class="calendar-container">
+        <h1>２０２５ -  １月</h1>
+        <table class="calendar">
+          <tr>
+            <th>SUN</th>
+            <th>MON</th>
+            <th>TUE</th>
+            <th>WED</th>
+            <th>THU</th>
+            <th>FRI</th>
+            <th>SAT</th>
+          </tr>
+          <tr class="day">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>1</td>
+            <td>2</td>
+            <td :class="{	selected:selectedDay === 3}" class="circle1" @click="selectedDate(3)">3</td>
+            <td>4</td>
+          </tr>
+          <tr class="day">
+            <td :class="{ selected:selectedDay === 5}" class=circle2 @click="selectedDate(5)">5</td>
+            <td>6</td>
+            <td>7</td>
+            <td :class="{ selected:selectedDay === 8}" class=circle2 @click="selectedDate(8)">8</td>
+            <td>9</td>
+            <td>10</td>
+            <td :class="{ selected:selectedDay === 11}" class=circle2 @click="selectedDate(11)">11</td>
+          </tr>
+          <tr class="day">
+            <td>12</td>
+            <td>13</td>
+            <td :class="{ selected:selectedDay === 14}" class=circle2 @click="selectedDate(14)">14</td>
+            <td :class="{	selected:selectedDay === 15}" class="circle1" @click="selectedDate(15)">15</td>
+            <td>16</td>
+            <td>17</td>
+            <td>18</td>
+          </tr>
+          <tr class="day">
+            <td :class="{ selected:selectedDay === 19}" class=circle2 @click="selectedDate(19)">19</td>
+            <td :class="{	selected:selectedDay === 20}" class="circle1" @click="selectedDate(20)">20</td>
+            <td>21</td>
+            <td :class="{ selected:selectedDay === 22}" class=circle2 @click="selectedDate(22)">22</td>
+            <td :class="{	selected:selectedDay === 23}" class="circle1" @click="selectedDate(23)">23</td>
+            <td>24</td>
+            <td>25</td>
+          </tr>
+          <tr class="day">
+            <td :class="{ selected:selectedDay === 26}" class=circle2 @click="selectedDate(26)">26</td>
+            <td :class="{	selected:selectedDay === 27}" class="circle1" @click="selectedDate(27)">27</td>
+            <td>28</td>
+            <td :class="{ selected:selectedDay === 29}" class=circle2 @click="selectedDate(29)">29</td>
+            <td>30</td>
+            <td :class="{ selected:selectedDay === 31}" class=circle2 @click="selectedDate(31)">31</td>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+        
+      <div class ="timebox-container">
+        <!-- 時刻が選択されると表示される -->
+        <div v-if="selectedTimes.length > 0">
+          <div class="timebox" v-for="time in selectedTimes" :key="time" @click="selectTime(time)">
+            <p>{{time}}</p> 
+          </div>
+        </div>
+        <div v-else>
+          <P>※カレンダーから日付を選択してください</P>
+        </div>
+      </div>
+      <br><br>
+
+<!-- 時刻が選ばれた後に表示されるconfirmセクション -->
+    <!-- <div class = "confirm" v-if="selectedTime">
+      予約日時は<br>
+      <P>{{ message }}<br>{{selectedTime}}</P><br>
+      で、よろしいですか？<br><br>
+      <button>確認画面へ</button><br>
+    </div> -->
+
+  </div>
+
+<style>
+  /* 追加: bodyをflexで中央寄せ */
+body {
+  display: flex;
+  justify-content: center; /* 横方向の中央寄せ */
+  align-items: center;     /* 縦方向の中央寄せ */
+  height: 100vh;           /* 親要素の高さを100%に設定 */
+  margin: 0;               /* デフォルトの余白を取り除く */
+}
 
 
-    <!--コンテンツ -->
-    <img src = "images/IMG_6979.jpg" alt="Fujisan1" title="Fujisan1" width="1500" height="450">
-    <div class="container">
-    <nav>
-        <ul>
-            <li><a href="/concept.html">コンセプト</a></li>
-            <li><a href="/reserve.html">予約</a></li>
-            <li><a href="/fee.html">料金</a></li>
-            <li><a href="/access.html">アクセス</a></li>
-            <li><a href="/contact.html">お問い合わせ</a></li>
-            <li><a href="/me.html">私について</a></li>
-            <li><a href="/writing.html">医術日誌</a></li>
-            <li><a href="https://amenomizu.webflow.io">in English</a></li>
-        </ul>
-    </nav>
+.calendar-container {
+    width: 500px;
+    margin: 0 auto;
+    border-radius: 5px;
+    color: #1a1a1a;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    padding:20px;
+  }
+
+  h1 {
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+    font-size: 24px;
+    margin: 0;
+  }
+  .calendar {
+    padding: 0 30px 30px 30px;
+  }
+  table {
+    width: 100%;
+  }
+  th, td {
+    text-align: center;
+    padding: 10px;
+  }
+  th {
+    font-weight: normal;
+    font-size: 14px;
+  }
+  td {
+    font-weight: bold;
+  }
+  .day *:first-child {
+    color: #ff838b;
+  }
+  .day *:last-child {
+    color: #6fb5ff;
+  }
+
+  .confirm{
+    text-align: center;
+  }
+
+  .button{
+    width:25px;
+    box-shadow: 2px 2px 5px gray;
+  }
+
+  .circle1{
+    background:rgba(29, 235, 29, 0.823);
+    border-radius: 50%;
+    width: 25px;
+    box-shadow: 2px 2px 5px gray;
+  }
+
+  .circle2{
+    background:rgba(246, 176, 101, 0.823);
+    border-radius: 50%;
+    width: 25px;
+      box-shadow: 2px 2px 5px gray;
+    }
+
+    .selectedDay{
+      border-bottom: #ff6f6f;
+    }
+
+    .timebox-container{
+      display: flex; /* 横並びにする */
+      flex-wrap: wrap; /* 必要なら折り返しを有効にする */
+      gap: 10px; /*アイテム間のスペースを設定　*/
+      justify-content: center; 中央寄せ（必要に応じて変更）
+      width:100%;
+      margin-top: 20px;
+    }
 
 
-    <br>
+    .timebox{
+      flex: 1 1 120px;
+      max-width:120px;
+      margin:0px 10px;
+      text-align:center;
+      color:#fff;
+      background-color: #73b5fc;
+      border-bottom: solid 6px #3f87ce;
+      box-shadow: 3px 4px 2px rgba(0, 0, 0, 0.25);
+      border-radius: 20px;
+      cursor: pointer;
+      padding: 2px;
+      display:inline-block;
+    }
+</style>
 
+<script>
+Vue.createApp({
+  data(){
+    return{
+      selectedDay: null, //選択された日付
+      selectedTime:'', //選択された時刻
+      times:{
+        3:['8:00','10:00','12:00','14:00','16:00','18:00'],
+        15:['8:00','10:00','12:00','14:00','16:00','18:00'],
+        20:['8:00','14:00','16:00','18:00'],
+        23:['8:00','10:00','12:00','14:00','16:00','18:00'],
+        27:['8:00','10:00','12:00','14:00','16:00','18:00'],
+        5:['19:00'],
+        8:['19:00'],
+        11:['19:00'],
+        14:['19:00'],
+        19:['19:00'],
+        22:['19:00'],
+        26:['19:00'],
+        29:['19:00'],
+        31:['19:00'],
+          
+      },
+      selectedTimes:[],
+      message:'', //メッセージ
+    };
+  },
 
-<p>（2024/12/20 19:20  更新版）</p>
+methods: {
+  // 予約可能日をクリック時に、その日時を表示
+  selectedDate(day){
+    this.selectedDay = day;
+    this.selectedTimes = this.times[day]||[]; //該当する時間を設定。
+    this.selectedTime =''; //時刻をリセット
+    this.message = `１月${day}日`;　//メッセージを設定
+  },
 
-<br>&#x2744;
-<br><br>
+//時刻をクリックした時の処理
+  selectTime(time){
+  this.selectedTime = time; //時刻を選択
+  }
+}
 
-
-<h1>12月</h1><br>
-
-<br>&#x2744;
-
-<p>23(月）8~,10~,12~,14~,16~,-,</p>
-<p>25(水）-,-,-,-,-,19~,</p>
-<p>26(木）8~,10~,-,-,-,-,</p>
-<p>28(土）-,-,-,-,-,19~,</p>
-<br>&#x2744;
-<p>29(日）8~,10~,12~,14~,16~,-,</p>
-<p>30(月）-,-,-,-,-,19~,</p>
-<br>&#x2744;
-
-<br><br><br>
-
-
-
-<p>その他の日時もお受けすることは可能なことはあります。その際はご連絡ください。</p><br>
-    (予約が確定した日付や時間は、上記の予約表から消えますが、予約がされてない訳ではありませんので、ご予約されたご本人様はご心配は無用です。)</p>
-<br>
-<p>注）公的医療保険制度の適用での施術は行っておりません。<br><br>
-    （独自の医学医術の理論に基づいて、依頼してくださる方ひとりひとりに本当に合っているものを選択していきたいと思っています。<br>
-    そのため、制度に縛られず行っていく必要があるためです。今後も保険適用の予定はありません。）<br>
-</p>
-<p>どなたでも歓迎です。お気軽にご連絡ください。</p>
-
-<br><br>
-
-<hr>
-<br><br>
-
-            <br><br><br><br>
-        </h5>
-    
-    </h5>
-
-
-
-
-</div>
-    
-
-
+}).mount('#app');
+</script>
 </body>
 </html>
